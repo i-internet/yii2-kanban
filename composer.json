@@ -33,14 +33,11 @@
         "npm-asset/highlight.js": "^9.18.1",
         "simialbi/yii2-fontawesome": "^3.4.8",
         "simialbi/yii2-simialbi-base": ">=0.10.2 <1.0 | ^1.0.0",
-        "simialbi/yii2-summernote": "^1.1.0",
-        "simialbi/yii2-widget-chart": "^0.7.0",
-        "simialbi/yii2-widget-hideseek": "^1.0.0"
+        "simialbi/yii2-summernote": "^1.1.0"
     },
 	"require-dev": {
         "ext-gd": "*",
         "ext-mbstring": "*",
-        "simialbi/yii2-ticket": "~1.0@dev",
 		"yiisoft/yii2-coding-standards": "~2.0",
 		"phpunit/phpunit": "<7"
 	},
