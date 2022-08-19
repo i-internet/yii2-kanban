@@ -23,7 +23,7 @@ class BoardUserAssignment extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%kanban__board_user_assignment}}';
+        return '{{%kanban_board_user_assignment}}';
     }
 
     /**

@@ -181,9 +181,14 @@ foreach ($statuses as $status => $label) {
                         'class' => '\kartik\grid\DataColumn',
                         'format' => 'date',
                         'attribute' => 'end_date',
-                        'filterType' => '\sandritsch91\yii2\flatpickr\Flatpickr',
+                        'filterType' => GridView::FILTER_DATE,
                         'filterWidgetOptions' => [
-                            'customAssetBundle' => false,
+                            'pickerButton' => '<span class="input-group-text kv-date-picker">' . FAS::i('calendar-alt') . '</span>',
+                            'removeButton' => false,
+                            'pluginOptions' => [
+                                'format' => 'dd.mm.yyyy',
+                                'todayHighlight' => true
+                            ]
                         ],
                         'vAlign' => GridView::ALIGN_MIDDLE
                     ],
@@ -191,9 +196,14 @@ foreach ($statuses as $status => $label) {
                         'class' => '\kartik\grid\DataColumn',
                         'format' => 'datetime',
                         'attribute' => 'created_at',
-                        'filterType' => '\sandritsch91\yii2\flatpickr\Flatpickr',
+                        'filterType' => GridView::FILTER_DATE,
                         'filterWidgetOptions' => [
-                            'customAssetBundle' => false,
+                            'pickerButton' => '<span class="input-group-text kv-date-picker">' . FAS::i('calendar-alt') . '</span>',
+                            'removeButton' => false,
+                            'pluginOptions' => [
+                                'format' => 'dd.mm.yyyy',
+                                'todayHighlight' => true
+                            ]
                         ],
                         'vAlign' => GridView::ALIGN_MIDDLE
                     ],
@@ -201,9 +211,14 @@ foreach ($statuses as $status => $label) {
                         'class' => '\kartik\grid\DataColumn',
                         'format' => 'datetime',
                         'attribute' => 'updated_at',
-                        'filterType' => '\sandritsch91\yii2\flatpickr\Flatpickr',
+                        'filterType' => GridView::FILTER_DATE,
                         'filterWidgetOptions' => [
-                            'customAssetBundle' => false,
+                            'pickerButton' => '<span class="input-group-text kv-date-picker">' . FAS::i('calendar-alt') . '</span>',
+                            'removeButton' => false,
+                            'pluginOptions' => [
+                                'format' => 'dd.mm.yyyy',
+                                'todayHighlight' => true
+                            ]
                         ],
                         'vAlign' => GridView::ALIGN_MIDDLE
                     ]

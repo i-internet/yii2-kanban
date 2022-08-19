@@ -50,7 +50,7 @@ class AttachmentController extends Controller
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDelete($id, $readonly = false)
+    public function actionDelete($id)
     {
         $model = $this->findModel($id);
         $task = $model->task;
@@ -75,10 +75,7 @@ class AttachmentController extends Controller
             'model' => $task,
             'buckets' => $buckets,
             'users' => $this->module->users,
-            'updateSeries' => false,
-            'statuses' => $this->module->statuses,
-            'return' => 'card',
-            'readonly' => $readonly,
+            'statuses' => $this->module->statuses
         ]);
     }
 

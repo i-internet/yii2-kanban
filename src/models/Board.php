@@ -11,7 +11,6 @@ use simialbi\yii2\models\UserInterface;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\caching\DbDependency;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
@@ -68,7 +67,7 @@ class Board extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%kanban__board}}';
+        return '{{%kanban_board}}';
     }
 
     /**
@@ -83,12 +82,8 @@ class Board extends ActiveRecord
             $id = Yii::$app->user->id;
         }
 
-        $dep = new DbDependency([
-            'sql' => 'SELECT COUNT([[id]]) FROM ' . static::tableName(),
-        ]);
-
         $query = static::find()
-            ->cache(60, $dep)
+            ->cache(60)
             ->alias('b')
             ->joinWith('assignments ba', false)
             ->joinWith('buckets.tasks.assignments ta', false)
@@ -165,11 +160,11 @@ class Board extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if ($insert && !Yii::$app->user->isGuest) {
-            $assignment = new BoardUserAssignment();
-            $assignment->board_id = $this->id;
-            $assignment->user_id = (string) Yii::$app->user->id;
-            $assignment->save();
+        if ($insert) {
+            static::getDb()->createCommand()->insert('{{%kanban_board_user_assignment}}', [
+                'board_id' => $this->id,
+                'user_id' => Yii::$app->user->id
+            ])->execute();
         }
         parent::afterSave($insert, $changedAttributes);
     }

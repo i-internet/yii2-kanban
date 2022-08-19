@@ -42,7 +42,7 @@ class Bucket extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%kanban__bucket}}';
+        return '{{%kanban_bucket}}';
     }
 
     /**

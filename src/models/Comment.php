@@ -36,7 +36,7 @@ class Comment extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%kanban__comment}}';
+        return '{{%kanban_comment}}';
     }
 
     /**

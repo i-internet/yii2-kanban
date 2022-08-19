@@ -1,22 +1,25 @@
 <?php
 
-use simialbi\yii2\turbo\Frame;
 use yii\bootstrap4\ActiveForm;
+use yii\widgets\Pjax;
 
 /* @var $this \yii\web\View */
 /* @var $model \simialbi\yii2\kanban\models\Bucket */
 /* @var $users \simialbi\yii2\models\UserInterface[] */
 /* @var $statuses array */
 
-Frame::begin([
-    'options' => [
-        'id' => 'create-bucket-frame'
-    ]
+?>
+
+<?php Pjax::begin([
+    'id' => 'createBucketPjax',
+    'formSelector' => '#createBucketForm',
+    'enablePushState' => false,
+    'clientOptions' => ['skipOuterContainers' => true]
 ]); ?>
 <div class="kanban-bucket" data-id="<?= $model->id; ?>">
     <?php $form = ActiveForm::begin([
         'action' => ['bucket/create', 'boardId' => $model->board_id],
-        'id' => 'sa-kanban-create-bucket-form',
+        'id' => 'createBucketForm',
         'fieldConfig' => function ($model, $attribute) {
             /* @var $model \yii\base\Model */
             return [
@@ -31,4 +34,4 @@ Frame::begin([
     <?= $form->field($model, 'name')->textInput(['autofocus' => true]); ?>
     <?php ActiveForm::end(); ?>
 </div>
-<?php Frame::end(); ?>
+<?php Pjax::end(); ?>

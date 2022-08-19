@@ -2,23 +2,26 @@
 
 use kartik\select2\Select2;
 use rmrevin\yii\fontawesome\FAS;
-use simialbi\yii2\turbo\Frame;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
+use yii\widgets\Pjax;
 
 /* @var $this \yii\web\View */
 /* @var $model \simialbi\yii2\kanban\models\TaskCopyForm */
 /* @var $buckets array */
 
-Frame::begin([
-    'options' => [
-        'id' => 'task-modal-frame'
+Pjax::begin([
+    'id' => 'taskCopyPjax',
+    'formSelector' => '#taskModalForm',
+    'enablePushState' => false,
+    'clientOptions' => [
+        'skipOuterContainers' => true
     ]
 ]);
 ?>
 <div class="kanban-task-modal">
     <?php $form = ActiveForm::begin([
-        'id' => 'sa-kanban-task-modal-form',
+        'id' => 'taskModalForm',
         'fieldConfig' => [
             'labelOptions' => [
                 'class' => ['col-form-label-sm', 'py-0']
@@ -84,4 +87,4 @@ Frame::begin([
     <?php ActiveForm::end(); ?>
 </div>
 <?php
-Frame::end();
+Pjax::end();

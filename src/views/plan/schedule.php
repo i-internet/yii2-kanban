@@ -2,16 +2,14 @@
 
 use simialbi\yii2\kanban\KanbanAsset;
 use simialbi\yii2\kanban\widgets\Calendar;
-use simialbi\yii2\turbo\Modal;
-use yii\helpers\Url;
+use yii\bootstrap4\Modal;
 use yii\web\JsExpression;
 
 /* @var $this \yii\web\View */
 /* @var $model \simialbi\yii2\kanban\models\Board */
 /* @var $calendarTasks array */
-/* @var $otherTasks \simialbi\yii2\kanban\models\Task[] */
+/* @var $otherTasks string */
 /* @var $users \simialbi\yii2\models\UserInterface[] */
-/* @var $statuses array */
 /* @var $readonly boolean */
 
 KanbanAsset::register($this);
@@ -44,15 +42,10 @@ $this->params['breadcrumbs'] = [
                     'plugins' => ['interaction'],
                     'editable' => true,
                     'droppable' => true,
-                    'buttonText' => [
-                        'next' => '→',
-                        'prev' => '←'
-                    ],
                     'eventRender' => new JsExpression('function (info) {
                         jQuery(info.el).attr({
-                            \'data-turbo-frame\': \'task-modal-frame\',
                             \'data-toggle\': \'modal\',
-                            \'data-target\': \'#task-modal\'
+                            \'data-target\': \'#taskModal\'
                         });
                     }'),
                     'eventDrop' => new JsExpression('function (info) {
@@ -62,7 +55,7 @@ $this->params['breadcrumbs'] = [
                         var end = (info.event.end instanceof Date)
                             ? info.event.end.getTime() / 1000
                             : null;
-                        jQuery.post(\'' . Url::to(['task/set-dates']) . '?id=\' + info.event.id, {
+                        jQuery.post(\'' . \yii\helpers\Url::to(['task/set-dates']) . '?id=\' + info.event.id, {
                             startDate: start,
                             endDate: end
                         });
@@ -74,7 +67,7 @@ $this->params['breadcrumbs'] = [
                         var end = (info.event.end instanceof Date)
                             ? info.event.end.getTime() / 1000
                             : null;
-                        jQuery.post(\'' . Url::to(['task/set-dates']) . '?id=\' + info.event.id, {
+                        jQuery.post(\'' . \yii\helpers\Url::to(['task/set-dates']) . '?id=\' + info.event.id, {
                             startDate: start,
                             endDate: end
                         });
@@ -86,7 +79,7 @@ $this->params['breadcrumbs'] = [
                         var end = (info.event.end instanceof Date)
                             ? info.event.end.getTime() / 1000
                             : null;
-                        jQuery.post(\'' . Url::to(['task/set-dates']) . '?id=\' + info.event.id, {
+                        jQuery.post(\'' . \yii\helpers\Url::to(['task/set-dates']) . '?id=\' + info.event.id, {
                             startDate: start,
                             endDate: end
                         }).done(function () {
@@ -97,43 +90,22 @@ $this->params['breadcrumbs'] = [
             ]); ?>
         </div>
         <div class="d-none d-lg-block col-lg-3" id="kanban-buckets">
-            <?php $lastBucket = null; ?>
-            <?php foreach ($otherTasks as $task): ?>
-                <?php if ($lastBucket !== $task->bucket_id): ?>
-                    <?php if ($lastBucket !== null): ?>
-                        <?= '</div>'; ?>
-                    <?php endif; ?>
-            <div class="kanban-bucket mb-4 w-100">
-                <h5><?= $task->bucket->name; ?></h5>
-                <?php endif; ?>
-                <?= $this->render('/task/item', [
-                    'statuses' => $statuses,
-                    'boardId' => $model->id,
-                    'closeModal' => false,
-                    'model' => $task,
-                    'users' => $users,
-                    'readonly' => $readonly
-                ]); ?>
-                <?php $lastBucket = $task->bucket_id; ?>
-            <?php endforeach; ?>
-            </div>
+            <?= $otherTasks; ?>
         </div>
     </div>
 </div>
 <?php
 Modal::begin([
+    'id' => 'taskModal',
     'options' => [
-        'id' => 'task-modal',
-        'options' => [
         'class' => ['modal', 'remote', 'fade']
-            ],
-        'clientOptions' => [
-            'backdrop' => 'static',
-            'keyboard' => false
-        ],
-        'size' => \yii\bootstrap4\Modal::SIZE_EXTRA_LARGE,
-        'title' => null,
-        'closeButton' => false
-    ]
+    ],
+    'clientOptions' => [
+        'backdrop' => 'static',
+        'keyboard' => false
+    ],
+    'size' => Modal::SIZE_LARGE,
+    'title' => null,
+    'closeButton' => false
 ]);
 Modal::end();

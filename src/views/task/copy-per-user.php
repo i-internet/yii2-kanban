@@ -2,52 +2,36 @@
 
 use rmrevin\yii\fontawesome\FAS;
 use simialbi\yii2\hideseek\HideSeek;
-use simialbi\yii2\turbo\Frame;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Dropdown;
 use yii\bootstrap4\Html;
+use yii\widgets\Pjax;
 
 /* @var $this \yii\web\View */
 /* @var $model \simialbi\yii2\kanban\models\Task */
 /* @var $users array */
-/* @var $group string */
 
-Frame::begin([
-    'options' => [
-        'id' => 'task-modal-frame'
+Pjax::begin([
+    'id' => 'taskCopyPerUserPjax',
+    'formSelector' => '#taskModalForm',
+    'enablePushState' => false,
+    'clientOptions' => [
+        'skipOuterContainers' => true
     ]
 ]);
-$options = [
-    'id' => 'sa-kanban-task-modal-form',
-    'fieldConfig' => [
-        'labelOptions' => [
-            'class' => ['col-form-label-sm', 'py-0']
-        ],
-        'inputOptions' => [
-            'class' => ['form-control', 'form-control-sm']
-        ]
-    ]
-];
-if ($group !== 'assignee') {
-    $options['validateOnSubmit'] = false;
-
-    if ($group === 'bucket') {
-        $options['options'] = [
-            'data' => [
-                'turbo-frame' => 'bucket-' . $model->bucket_id . '-frame'
-            ]
-        ];
-    } elseif ($group === 'status') {
-        $options['options'] = [
-            'data' => [
-                'turbo-frame' => 'bucket-status-' . $model->status . '-frame'
-            ]
-        ];
-    }
-}
 ?>
     <div class="kanban-task-modal">
-        <?php $form = ActiveForm::begin($options); ?>
+        <?php $form = ActiveForm::begin([
+            'id' => 'taskModalForm',
+            'fieldConfig' => [
+                'labelOptions' => [
+                    'class' => ['col-form-label-sm', 'py-0']
+                ],
+                'inputOptions' => [
+                    'class' => ['form-control', 'form-control-sm']
+                ]
+            ]
+        ]); ?>
         <div class="modal-header">
             <h5 class="modal-title"><?= Yii::t('simialbi/kanban/task', 'Create task per each user'); ?></h5>
             <?= Html::button('<span aria-hidden="true">' . FAS::i('times') . '</span>', [
@@ -183,4 +167,4 @@ if ($group !== 'assignee') {
         <?php ActiveForm::end(); ?>
     </div>
 <?php
-Frame::end();
+Pjax::end();

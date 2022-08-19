@@ -33,7 +33,7 @@ class ChecklistElement extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%kanban__checklist_element}}';
+        return '{{%kanban_checklist_element}}';
     }
 
     /**
@@ -44,7 +44,7 @@ class ChecklistElement extends ActiveRecord
         return [
             [['id', 'task_id'], 'integer'],
             ['name', 'string'],
-            ['end_date', 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'end_date'],
+            ['end_date', 'date', 'timestampAttribute' => 'end_date'],
             ['is_done', 'boolean'],
 
             ['is_done', 'default', 'value' => false],

@@ -7,6 +7,7 @@
 
 namespace simialbi\yii2\kanban;
 
+
 use simialbi\yii2\web\AssetBundle;
 
 class KanbanSwiperAsset extends AssetBundle
@@ -14,19 +15,19 @@ class KanbanSwiperAsset extends AssetBundle
     /**
      * {@inheritDoc}
      */
-    public $sourcePath = '@npm/swiper';
+    public $sourcePath = '@bower/swiper/dist';
 
     /**
      * {@inheritDoc}
      */
     public $css = [
-        'swiper-bundle.min.css'
+        'css/swiper.min.css'
     ];
 
     /**
      * {@inheritDoc}
      */
     public $js = [
-        'swiper-bundle.min.js'
+        'js/swiper.min.js'
     ];
 }

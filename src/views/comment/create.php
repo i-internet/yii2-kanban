@@ -2,36 +2,33 @@
 
 use marqu3s\summernote\Summernote;
 use rmrevin\yii\fontawesome\FAS;
-use simialbi\yii2\turbo\Frame;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 use yii\helpers\ReplaceArrayValue;
+use yii\widgets\Pjax;
 
 /* @var $this \yii\web\View */
-/* @var $model \simialbi\yii2\kanban\models\Comment */
+/* @var $model \simialbi\yii2\kanban\models\Task */
 /* @var $users array */
 
-Frame::begin([
-    'options' => [
-        'id' => 'task-modal-frame'
+Pjax::begin([
+    'id' => 'taskCopyPerUserPjax',
+    'formSelector' => '#taskModalForm',
+    'enablePushState' => false,
+    'clientOptions' => [
+        'skipOuterContainers' => true
     ]
 ]);
 ?>
     <div class="kanban-task-modal">
         <?php $form = ActiveForm::begin([
-            'id' => 'sa-kanban-task-modal-form',
+            'id' => 'taskModalForm',
             'fieldConfig' => [
                 'labelOptions' => [
                     'class' => ['py-0']
                 ],
                 'inputOptions' => [
                     'class' => ['form-control']
-                ]
-            ],
-            'validateOnSubmit' => false,
-            'options' => [
-                'data' => [
-                    'turbo-frame' => 'task-' . $model->task_id . '-frame'
                 ]
             ]
         ]); ?>
@@ -91,4 +88,4 @@ Frame::begin([
         <?php ActiveForm::end(); ?>
     </div>
 <?php
-Frame::end();
+Pjax::end();

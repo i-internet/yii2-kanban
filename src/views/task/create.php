@@ -1,11 +1,12 @@
 <?php
 
+use kartik\date\DatePicker;
 use rmrevin\yii\fontawesome\FAS;
-use sandritsch91\yii2\flatpickr\Flatpickr;
 use simialbi\yii2\hideseek\HideSeek;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Dropdown;
 use yii\bootstrap4\Html;
+use yii\widgets\Pjax;
 
 /* @var $this \yii\web\View */
 /* @var $board \simialbi\yii2\kanban\models\Board */
@@ -18,16 +19,26 @@ use yii\bootstrap4\Html;
 /* @var $buckets \simialbi\yii2\kanban\models\Bucket[] */
 /* @var $statuses array */
 
-$form = ActiveForm::begin([
-    'action' => ['task/create', 'boardId' => $board->id, $keyName => $id],
+?>
+
+<?php Pjax::begin([
+    'id' => 'createTaskPjax' . $bucketName,
+    'formSelector' => '#createTaskForm',
+    'enablePushState' => false,
+    'clientOptions' => ['skipOuterContainers' => true]
+]); ?>
+<?php if (!$mobile) : ?>
+    <?= Html::a('+', ['task/create', 'boardId' => $board->id, $keyName => $id], [
+        'class' => ['btn', 'btn-primary', 'btn-block']
+    ]); ?>
+<?php endif; ?>
+
+<?php $form = ActiveForm::begin([
+    'action' => ['task/create',  'boardId' => $board->id, $keyName => $id],
     'options' => [
-        'class' => ['mt-2', 'mt-md-4'],
-        'data' => [
-            'turbo-frame' => 'bucket-' . $id . '-frame'
-        ]
+        'class' => ['mt-2', 'mt-md-4']
     ],
-    'id' => 'sa-kanban-create-task-form',
-    'validateOnSubmit' => false,
+    'id' => 'createTaskForm',
     'fieldConfig' => function ($model, $attribute) {
         /* @var $model \yii\base\Model */
         return [
@@ -37,8 +48,7 @@ $form = ActiveForm::begin([
             ]
         ];
     }
-]);
-?>
+]); ?>
 <div class="card">
     <?= Html::button('<span aria-hidden="true">' . FAS::i('times') . '</span>', [
         'type' => 'button',
@@ -47,9 +57,9 @@ $form = ActiveForm::begin([
             'font-size' => '1rem',
             'right' => '.25rem'
         ],
+        'onclick' => 'jQuery(this).closest(\'form\').remove()',
         'data' => [
-            'target' => '#bucket-' . $id . '-create-task',
-            'toggle' => 'collapse'
+            'dismiss' => 'card'
         ],
         'aria' => [
             'label' => Yii::t('simialbi/kanban', 'Close')
@@ -64,11 +74,16 @@ $form = ActiveForm::begin([
             'options' => [
                 'class' => ['form-group', 'mb-0']
             ]
-        ])->widget(Flatpickr::class, [
-            'options' => [
-                'id' => 'flatpickr-create-task-' . $id,
+        ])->widget(DatePicker::class, [
+            'bsVersion' => '4',
+            'type' => DatePicker::TYPE_INPUT,
+            'pluginOptions' => [
+                'autoclose' => true,
+                'todayHighlight' => true
             ],
-            'customAssetBundle' => false
+            'options' => [
+                'readonly' => true
+            ]
         ]); ?>
         <?php if ($keyName !== 'userId'): ?>
             <div class="kanban-task-assignees kanban-assignees mt-3">
@@ -130,17 +145,16 @@ $form = ActiveForm::begin([
                     array_unshift($items, HideSeek::widget([
                         'fieldTemplate' => '<div class="search-field px-3 mb-3">{input}</div>',
                         'options' => [
-                            'id' => 'kanban-create-task-assignees-' . $id,
+                            'id' => 'kanban-create-task-assignees',
                             'placeholder' => Yii::t('simialbi/kanban', 'Filter by keyword')
                         ],
                         'clientOptions' => [
-                            'list' => '#dropdown-user-create-task-' . $id,
+                            'list' => '.kanban-create-task-assignees',
                             'ignore' => '.search-field,.dropdown-header'
                         ]
                     ]));
                     ?>
                     <?= Dropdown::widget([
-                        'id' => 'dropdown-user-create-task-' . $id,
                         'items' => $items,
                         'encodeLabels' => false,
                         'options' => [
@@ -157,5 +171,4 @@ $form = ActiveForm::begin([
         ]) ?>
     </div>
 </div>
-<?php
-ActiveForm::end();
+<?php ActiveForm::end(); ?>

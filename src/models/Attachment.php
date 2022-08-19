@@ -42,7 +42,7 @@ class Attachment extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%kanban__attachment}}';
+        return '{{%kanban_attachment}}';
     }
 
     /**

@@ -2,15 +2,14 @@
 
 use rmrevin\yii\fontawesome\FAS;
 use simialbi\yii2\kanban\KanbanAsset;
-use simialbi\yii2\turbo\Modal;
+use yii\bootstrap4\Modal;
 use yii\helpers\Url;
-use yii\web\JsExpression;
 
 /* @var $this \yii\web\View */
 /* @var $boards \simialbi\yii2\kanban\models\Board[] */
 /* @var $model \simialbi\yii2\kanban\models\Board */
+/* @var $buckets string */
 /* @var $users \simialbi\yii2\models\UserInterface[] */
-/* @var $group string */
 /* @var $readonly boolean */
 /* @var $showTask integer|null */
 
@@ -37,29 +36,10 @@ $this->params['breadcrumbs'] = [
                 <div></div>
             </div>
             <div class="kanban-bottom-scrollbar">
-                <?php
-                switch ($group) {
-                    default:
-                    case 'bucket':
-                        echo $this->render('buckets', [
-                            'model' => $model,
-                            'readonly' => $readonly
-                        ]);
-                        break;
-                    case 'assignee':
-                        echo $this->render('buckets-assignees', [
-                            'model' => $model,
-                            'readonly' => $readonly
-                        ]);
-                        break;
-                    case 'status':
-                        echo $this->render('buckets-status', [
-                            'model' => $model,
-                            'readonly' => $readonly
-                        ]);
-                        break;
-                }
-                ?>
+                <?= $this->render('buckets', [
+                    'model' => $model,
+                    'buckets' => $buckets
+                ]); ?>
 
                 <div class="d-md-none">
                     <div class="kanban-button-prev"><?= FAS::i('caret-left'); ?></div>
@@ -72,11 +52,11 @@ $this->params['breadcrumbs'] = [
 if ($showTask) {
     $link = Url::to(['task/update', 'id' => $showTask]);
     $js = <<<JS
-var link = jQuery('<a href="$link" data-toggle="modal" data-target="#task-modal" data-turbo-frame="task-modal-frame" />');
+var link = jQuery('<a href="$link" data-toggle="modal" data-target="#taskModal" />');
 link.appendTo('body').trigger('click').remove();
 JS;
 
-    $this->registerJs($js, $this::POS_LOAD);
+    $this->registerJs($js);
 }
 $js = <<<JS
 function onHide() {
@@ -88,19 +68,20 @@ function onHide() {
     });
 }
 JS;
-echo Modal::widget([
+Modal::begin([
+    'id' => 'taskModal',
     'options' => [
-        'id' => 'task-modal',
-        'options' => [
-            'class' => ['modal', 'remote', 'fade']
-        ],
-        'clientOptions' => [
-            'backdrop' => 'static',
-            'keyboard' => false
-        ],
-        'clientEvents' => ['hidden.bs.modal' => new JsExpression($js)],
-        'size' => \yii\bootstrap4\Modal::SIZE_EXTRA_LARGE,
-        'title' => null,
-        'closeButton' => false
+        'class' => ['modal', 'remote', 'fade']
     ],
+    'clientOptions' => [
+        'backdrop' => 'static',
+        'keyboard' => false
+    ],
+    'clientEvents' => [
+        'hidden.bs.modal' => new \yii\web\JsExpression($js)
+    ],
+    'size' => Modal::SIZE_LARGE,
+    'title' => null,
+    'closeButton' => false
 ]);
+Modal::end();

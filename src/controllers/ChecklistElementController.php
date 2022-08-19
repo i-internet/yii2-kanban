@@ -43,11 +43,10 @@ class ChecklistElementController extends Controller
     /**
      * Set checklist element to done status
      * @param integer $id
-     * @param boolean $readonly
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionSetDone($id, $readonly = false)
+    public function actionSetDone($id)
     {
         $model = $this->findModel($id);
 
@@ -57,10 +56,7 @@ class ChecklistElementController extends Controller
         return $this->renderAjax('/task/item', [
             'model' => $model->task,
             'statuses' => $this->module->statuses,
-            'users' => $this->module->users,
-            'closeModal' => false,
-            'group' => 'bucket',
-            'readonly' => $readonly
+            'users' => $this->module->users
         ]);
     }
 
