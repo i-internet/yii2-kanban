@@ -33,9 +33,6 @@
         "npm-asset/swiper": "^6.3.5",
         "rmrevin/yii2-fontawesome": "^3.4.0",
         "sandritsch91/yii2-widget-flatpickr": "^1.0.0",
-        "simialbi/yii2-summernote": "^1.2.1",
-        "simialbi/yii2-widget-chart": "^0.7.0",
-        "simialbi/yii2-widget-hideseek": "^1.0.0",
         "simshaun/recurr": "^5.0.0"
     },
     "require-dev": {
@@ -44,9 +41,7 @@
         "codeception/module-asserts": "^2.0.1",
         "codeception/module-filesystem": "^2.0.1",
         "codeception/module-yii2": "^1.0",
-        "simialbi/yii2-ticket": "~1.0@dev",
-        "yiisoft/yii2-coding-standards": "~2.0",
-        "yiisoft/yii2-symfonymailer": "^2.0.3"
+        "simialbi/yii2-ticket": "~1.0@dev"
     },
     "suggest": {
         "ext-gd": "For autogeneration of visualisations",
